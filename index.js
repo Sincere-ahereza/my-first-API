@@ -1,44 +1,56 @@
 
-const express = require('express');
+// Import the Express module
+const express = require("express");
 
-const application = express();
-const PORT = 3000;
+// Create an instance of the Express application
+const app = express();
+
 
 // Middleware to parse JSON bodies
-application.use(express.json());
+app.use(express.json());
+
+// Define a route for the home page
+app.get("/", (req, res) => {
+    res.send("Hello, world!");
+});
+
+// Start the server and listen on port 3000
+app.listen(3000, () => {
+    console.log("Server is running on http://localhost:3000");
+});
 
 // Root route
-application.get('/', (request, response) => {
+app.get('/', (request, response) => {
     response.send('Welcome to my backend server');
 });
 //http methods;GET,POST,PUT,DELETE,PATCH
 
 // About route
-application.get('/about', (req, res) => {
+app.get('/about', (req, res) => {
     res.send('This is my about page');
 });
 
 // Contact route (should be a separate path)
-application.get('/contact', (req, res) => {
+app.get('/contact', (req, res) => {
     res.send('This is my contact page');
 });
 
 // Route parameters
-application.get('/users/:id', (req, res) => {
+app.get('/users/:id', (req, res) => {
     const userid = req.params.id;
-  res.send('User ID is: ' + userid);
+    res.send('User ID is: ' + userid);
 
-    
+
 });
 
 // Query parameters
-application.get('/search', (req, res) => {
+app.get('/search', (req, res) => {
     const query = req.query.q;
     res.send('YOU SEARCHED FOR: ' + query);
 });
 
 // JSON response
-application.get('/products', (req, res) => {
+app.get('/products', (req, res) => {
     const products = [
         { id: 1, name: 'Product 1', price: 100 },
         { id: 2, name: 'Product 2', price: 200 },
@@ -46,30 +58,39 @@ application.get('/products', (req, res) => {
     ];
     res.json(products);
 });
-let products=[]
-
-// POST request to add a new product
+let products = []
+//post request
 app.post('/products', (req, res) => {
     const { name, price } = req.body;
-
-    // Validate input
-    if (!name || !price) {
-        return res.status(400).json({ error: 'Name and price are required.' });
-    }
-
     // Create new product
     const newProduct = {
         id: products.length + 1,
         name: name,
-        price: price
-    };
+        price: price,
 
-    // Add to products array
-    products.push(newProduct);
+    }
 
-    // Respond with the newly created product
-    res.status(201).json(newProduct);
+    // You might want to add validation or database logic here
+  // Add the new product to the products array
+products.push(newProduct);
+
+// Send a success response with the newly created product
+res.status(201).json({
+  message: "Product has been created successfully",
+  product: newProduct
 });
+ 
+    });
+
+
+
+
+
+
+
+
+
+
 
 
 
