@@ -1,6 +1,7 @@
 
 // Import the Express module
 const express = require("express");
+const connectDB =require("./db")
 
 // Create an instance of the Express application
 const app = express();
@@ -11,7 +12,7 @@ app.use(express.json());
 
 // Define a route for the home page
 app.get("/", (req, res) => {
-    res.send("Hello, world!");
+    res.send("hello, world!");
 });
 
 // Start the server and listen on port 3000
@@ -69,6 +70,7 @@ app.post('/products', (req, res) => {
         price: price,
 
     }
+    console.log(newProduct.name);
 
     // You might want to add validation or database logic here
   // Add the new product to the products array
@@ -82,7 +84,7 @@ res.status(201).json({
  
     });
 
-
+connectDB();
 
 
 
