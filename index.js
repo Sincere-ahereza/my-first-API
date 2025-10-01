@@ -1,7 +1,13 @@
 
-// Import the Express module
+// Import required modules
 const express = require("express");
-const connectDB =require("./db")
+
+const connectDB = require("./db");
+
+require("dotenv").config();
+// Import the Product model from the models directory
+const Product = require("./models/product");
+
 
 // Create an instance of the Express application
 const app = express();
@@ -15,10 +21,14 @@ app.get("/", (req, res) => {
     res.send("hello, world!");
 });
 
-// Start the server and listen on port 3000
-app.listen(3000, () => {
-    console.log("Server is running on http://localhost:3000");
+// Start the server and listen on the specified port
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
+
+
 
 // Root route
 app.get('/', (request, response) => {
@@ -70,7 +80,7 @@ app.post('/products', (req, res) => {
         price: price,
 
     }
-    console.log(newProduct.name);
+   
 
     // You might want to add validation or database logic here
   // Add the new product to the products array
@@ -81,7 +91,22 @@ res.status(201).json({
   message: "Product has been created successfully",
   product: newProduct
 });
- 
+   app.post('/save-product', async (req, res) => {
+    try {
+        const product = new Product(req.body); // Ensure 'Product' is correctly defined/imported
+        await product.save();
+       res.json({
+    message: "Product saved successfully to DB",
+    product: product
+});
+
+        
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+
     });
 
 connectDB();

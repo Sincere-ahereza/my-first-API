@@ -2,17 +2,14 @@ const mongoose = require("mongoose");
 
 const connectDB = async () => {
   try {
-    const connectionString = "mongodb+srv://aherezamatthan_db_user:28M1udLlxYAhXGSJ@cluster0.zbwygrl.mongodb.net/";
-    
-    await mongoose.connect(connectionString, {
+    await mongoose.connect(process.env.MONGO_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-
     console.log("✅ Successfully connected to MongoDB");
   } catch (error) {
-    console.log(error);
-    process.exit(1); // Optional: exit the process if connection fails
+    console.log( error);
+    process.exit(1); // Exit the process if connection fails
   }
 };
 
